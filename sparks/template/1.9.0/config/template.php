@@ -13,7 +13,7 @@
 |
 */
 
-$config['parser_enabled'] = TRUE;
+$config['parser_enabled'] = FALSE;
 
 /*
 |--------------------------------------------------------------------------
@@ -56,7 +56,7 @@ $config['title_separator'] = ' | ';
 |
 */
 
-$config['layout'] = FALSE;
+$config['layout'] = 'front';
 
 /*
 |--------------------------------------------------------------------------
@@ -71,7 +71,7 @@ $config['layout'] = FALSE;
 |
 */
 
-$config['theme'] = '';
+$config['theme'] = 'site';
 
 /*
 |--------------------------------------------------------------------------
@@ -85,5 +85,5 @@ $config['theme'] = '';
 */
 
 $config['theme_locations'] = array(
-	APPPATH.'themes/'
+	APPPATH.'../themes/'
 );

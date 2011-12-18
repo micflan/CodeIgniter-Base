@@ -16,6 +16,10 @@
 */
 $config['base_url']	= '';
 
+$config['modules_locations'] = array(
+	FCPATH.'modules/' => '../../modules/',
+);
+
 /*
 |--------------------------------------------------------------------------
 | Index File

@@ -38,7 +38,7 @@ $config['assets']['auto_clear_js_cache']  = false;
 |
 */
 
-$config['assets']['assets_dir'] = 'assets';
+$config['assets']['assets_dir'] = 'themes/site/assets';
 $config['assets']['js_dir']     = 'js';
 $config['assets']['css_dir']    = 'css';
 $config['assets']['cache_dir']  = 'cache';

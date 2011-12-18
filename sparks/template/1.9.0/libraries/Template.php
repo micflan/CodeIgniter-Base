@@ -40,6 +40,8 @@ class Template
 
 	private $_is_mobile = FALSE;
 
+	private $_return_data = FALSE;
+
 	// Minutes that cache will be alive for
 	private $cache_lifetime = 0;
 
@@ -190,6 +192,12 @@ class Template
 	 */
 	public function build($view, $data = array(), $return = FALSE)
 	{
+		// Return data if that's all that's asked for.
+		if ($this->return_data)
+			return $data;
+
+		$this->_ci->load->library('user_agent');
+
 		// Set whatever values are given. These will be available to all view files
 		is_array($data) OR $data = (array) $data;
 
@@ -200,9 +208,9 @@ class Template
 		unset($data);
 
 		if (empty($this->_title))
-		{
+			$this->_title = isset($this->_data['pgTitle']) ? $this->_data['pgTitle'] : NULL;
+		if (empty($this->_title))
 			$this->_title = $this->_guess_title();
-		}
 
 		// Output template variables to the template
 		$template['title']	= $this->_title;
@@ -349,6 +357,17 @@ class Template
 		return $this;
 	}
 
+
+	public function set_return_object($arg = NULL)
+	{
+		$this->_return_object = $arg;
+	}
+
+	public function set_return_data($arg = NULL)
+	{
+		$this->_return_data = $arg;
+	}
+	
 
 	/**
 	 * Which theme are we using here?
@@ -576,9 +595,9 @@ class Template
 		foreach ($this->_theme_locations as $location)
 		{
 			// Get special web layouts
-			if( is_dir($location.$theme.'/views/web/layouts/') )
+			if( is_dir($location.$theme.'/web/layouts/') )
 			{
-				foreach(glob($location.$theme . '/views/web/layouts/*.*') as $layout)
+				foreach(glob($location.$theme . '/web/layouts/*.*') as $layout)
 				{
 					$layouts[] = pathinfo($layout, PATHINFO_BASENAME);
 				}
@@ -586,9 +605,9 @@ class Template
 			}
 
 			// So there are no web layouts, assume all layouts are web layouts
-			if(is_dir($location.$theme.'/views/layouts/'))
+			if(is_dir($location.$theme.'/layouts/'))
 			{
-				foreach(glob($location.$theme . '/views/layouts/*.*') as $layout)
+				foreach(glob($location.$theme . '/layouts/*.*') as $layout)
 				{
 					$layouts[] = pathinfo($layout, PATHINFO_BASENAME);
 				}
@@ -633,7 +652,7 @@ class Template
 		// Using a theme? Put the theme path in before the view folder
 		if ( ! empty($this->_theme))
 		{
-			$view_folder = $this->_theme_path.'views/';
+			$view_folder = $this->_theme_path.'/';
 		}
 
 		// Would they like the mobile version?
@@ -670,8 +689,9 @@ class Template
 			foreach ($this->_theme_locations as $location)
 			{
 				$theme_views = array(
-					$this->_theme . '/views/modules/' . $this->_module . '/' . $view,
-					$this->_theme . '/views/' . $view
+					//$this->_theme . '/modules/' . $this->_module . '/' . $view,
+					$this->_theme . '/' . $view,
+					'modules/' . $view
 				);
 
 				foreach ($theme_views as $theme_view)
